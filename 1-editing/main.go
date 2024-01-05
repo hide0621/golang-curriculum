@@ -1,21 +1,24 @@
 package main
 
 import (
-	"fmt"
-	"net/http"
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
-type myHandler struct{}
-
-func (h *myHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
-	fmt.Fprintf(w, "Serve HTTP")
-}
-
 func main() {
-	fmt.Println("Hello World")
 
-	handler := &myHandler{}
-	http.Handle("/", handler)
-	// http.HandleFunc("/", handler.ServeHTTP)
-	http.ListenAndServe(":8080", nil)
+	e := echo.New()
+
+	e.Use(middleware.Logger())
+
+	e.GET("/", func(c echo.Context) error {
+		return c.String(200, "Hello World from echo")
+	})
+
+	e.GET("/users", func(c echo.Context) error {
+		return c.String(200, "Hello Users")
+	})
+
+	e.Start(":8080")
+
 }
