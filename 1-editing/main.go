@@ -62,6 +62,34 @@ func main() {
 
 	})
 
+	e.PUT("/users/:id", func(c echo.Context) error {
+
+		id, err := strconv.Atoi(c.Param("id"))
+		if err != nil {
+			return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+		}
+
+		name := c.FormValue("name")
+
+		age, err := strconv.Atoi(c.FormValue("age"))
+		if err != nil {
+			return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+		}
+
+		result, err := db.Exec("UPDATE users SET name = ?, age = ? WHERE id = ?", name, age, id)
+		if err != nil {
+			return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+		}
+
+		rows, _ := result.RowsAffected()
+		if rows == 0 {
+			return echo.NewHTTPError(http.StatusNotFound, "not found")
+		}
+
+		return c.JSON(http.StatusOK, &User{ID: int(id), Name: name, Age: age})
+
+	})
+
 	e.GET("/users", func(c echo.Context) error {
 
 		rows, err := db.Query("SELECT id, name, age FROM users")
