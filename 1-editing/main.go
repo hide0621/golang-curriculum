@@ -62,6 +62,27 @@ func main() {
 
 	})
 
+	e.GET("/users", func(c echo.Context) error {
+
+		rows, err := db.Query("SELECT id, name, age FROM users")
+		if err != nil {
+			echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+		}
+		defer rows.Close()
+
+		users := []User{}
+		for rows.Next() {
+			var user User
+			if rows.Scan(&user.ID, &user.Name, &user.Age); err != nil {
+				echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+			}
+			users = append(users, user)
+		}
+
+		return c.JSON(http.StatusOK, users)
+
+	})
+
 	e.Start(":8080")
 
 }
