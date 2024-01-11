@@ -57,10 +57,32 @@ func main() {
 		log.Fatal(err)
 	}
 
-	log.Println("table created")
+	// log.Println("table created")
+	log.Println("server start!")
 
 	e := echo.New()
 	e.Use(middleware.Logger())
+
+	e.DELETE("/users/:id", func(c echo.Context) error {
+
+		id, err := strconv.Atoi(c.Param("id"))
+		if err != nil {
+			echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+		}
+
+		result, err := db.Exec("DELETE FROM users WHERE id = ?", id)
+		if err != nil {
+			echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+		}
+
+		rowsAffected, _ := result.RowsAffected()
+		if rowsAffected == 0 {
+			echo.NewHTTPError(http.StatusNotFound, "not found")
+		}
+
+		return c.NoContent(http.StatusNoContent)
+
+	})
 
 	e.POST("/users", func(c echo.Context) error {
 
