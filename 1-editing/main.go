@@ -25,6 +25,22 @@ func initDB(filepath string) *sql.DB {
 	return db
 }
 
+func validateUser(name string, age int) error {
+
+	if name == "" {
+		return echo.NewHTTPError(http.StatusBadRequest, "name is empty")
+	}
+	if len(name) > 100 {
+		return echo.NewHTTPError(http.StatusBadRequest, "name is too long")
+	}
+	if age < 0 || age >= 200 {
+		return echo.NewHTTPError(http.StatusBadRequest, "age must be between 0 and 200")
+	}
+
+	return nil
+
+}
+
 func main() {
 
 	db := initDB("example.db") // golang-curriculum/1-editing/example.db
@@ -51,6 +67,11 @@ func main() {
 		name := c.FormValue("name")
 		age, _ := strconv.Atoi(c.FormValue("age"))
 
+		// 教材には無かったが更新系なので追加した
+		if err := validateUser(name, age); err != nil {
+			return err
+		}
+
 		result, err := db.Exec("INSERT INTO users (name, age) VALUES (?, ?)", name, age)
 		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
@@ -74,6 +95,10 @@ func main() {
 		age, err := strconv.Atoi(c.FormValue("age"))
 		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+		}
+
+		if err := validateUser(name, age); err != nil {
+			return err
 		}
 
 		result, err := db.Exec("UPDATE users SET name = ?, age = ? WHERE id = ?", name, age, id)
