@@ -158,6 +158,24 @@ func main() {
 
 	})
 
+	e.GET("/users/:id", func(c echo.Context) error {
+
+		id, err := strconv.Atoi(c.Param("id"))
+		if err != nil {
+			echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+		}
+
+		row := db.QueryRow("SELECT id, name, age FROM users WHERE id = ?", id)
+
+		var user User
+		if err := row.Scan(&user.ID, &user.Name, &user.Age); err != nil {
+			echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+		}
+
+		return c.JSON(http.StatusOK, user)
+
+	})
+
 	e.Start(":8080")
 
 }
