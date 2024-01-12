@@ -1,7 +1,29 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
+)
 
 func main() {
-	fmt.Println("Hello Golang")
+
+	e := echo.New()
+
+	e.Use(middleware.Logger())
+	e.Use(middleware.Recover())
+
+	e.GET("/tasks", func(c echo.Context) error {
+		fmt.Println("get all tasks")
+		return c.String(200, "get all tasks")
+	})
+
+	e.POST("/tasks", func(c echo.Context) error {
+		fmt.Println("create task")
+		return c.String(200, "create task")
+	})
+
+	e.Start(":8080")
+
 }
