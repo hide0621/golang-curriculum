@@ -1,6 +1,7 @@
 package main
 
 import (
+	"2/controller"
 	"fmt"
 
 	"github.com/labstack/echo/v4"
@@ -14,10 +15,9 @@ func main() {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
-	e.GET("/tasks", func(c echo.Context) error {
-		fmt.Println("get all tasks")
-		return c.String(200, "get all tasks")
-	})
+	taskController := &controller.TaskController{}
+
+	e.GET("/tasks", taskController.Get)
 
 	e.POST("/tasks", func(c echo.Context) error {
 		fmt.Println("create task")
