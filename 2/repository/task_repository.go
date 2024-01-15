@@ -44,3 +44,24 @@ func (r *taskRepositoryImpl) Read(id int) (*Task, error) {
 	return &task, err
 
 }
+
+func (r *taskRepositoryImpl) Update(task *Task) error {
+
+	stmt := `UPDATE tasks SET title = ? WHERE id = ?`
+
+	rows, err := r.db.Exec(stmt, task.Title, task.ID)
+	if err != nil {
+		return err
+	}
+
+	rowsAffected, err := rows.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if rowsAffected == 0 {
+		return sql.ErrNoRows
+	}
+
+	return err
+
+}
