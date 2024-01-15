@@ -30,3 +30,14 @@ func (u *taskUsecase) CreateTask(title string) error {
 	return err
 
 }
+
+func (u *taskUsecase) GetTask(id int) (*repository.Task, error) {
+
+	t, err := u.r.Read(id)
+	if err != nil {
+		return nil, err
+	}
+
+	return t, nil
+
+}
