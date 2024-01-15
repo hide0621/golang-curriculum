@@ -41,3 +41,13 @@ func (u *taskUsecase) GetTask(id int) (*repository.Task, error) {
 	return t, nil
 
 }
+
+func (u *taskUsecase) UpdateTask(id int, title string) error {
+
+	task := repository.Task{ID: id, Title: title}
+
+	err := u.r.Update(&task)
+
+	return err
+
+}
