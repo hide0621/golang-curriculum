@@ -51,3 +51,11 @@ func (u *taskUsecase) UpdateTask(id int, title string) error {
 	return err
 
 }
+
+func (u *taskUsecase) DeleteTask(id int) error {
+
+	err := u.r.Delete(id)
+
+	return err
+
+}
