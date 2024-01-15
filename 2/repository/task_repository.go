@@ -1,11 +1,14 @@
 package repository
 
-import "database/sql"
+import (
+	"2/model"
+	"database/sql"
+)
 
 type TaskRepository interface {
-	Create(task *Task) (int, error)
-	Read(id int) (*Task, error)
-	Update(task *Task) error
+	Create(task *model.Task) (int, error)
+	Read(id int) (*model.Task, error)
+	Update(task *model.Task) error
 	Delete(id int) error
 }
 
@@ -13,17 +16,11 @@ type taskRepositoryImpl struct {
 	db *sql.DB
 }
 
-// コントローラー層に実装されていて２重実装になるが、一旦ここにも実装
-type Task struct {
-	ID    int    `json:"id"`
-	Title string `json:"title"`
-}
-
 func NewTaskRepository(db *sql.DB) TaskRepository {
 	return &taskRepositoryImpl{db: db}
 }
 
-func (r *taskRepositoryImpl) Create(task *Task) (int, error) {
+func (r *taskRepositoryImpl) Create(task *model.Task) (int, error) {
 
 	stmt := `INSERT INTO tasks (title) VALUES (?) RETURNING id`
 
@@ -33,11 +30,11 @@ func (r *taskRepositoryImpl) Create(task *Task) (int, error) {
 
 }
 
-func (r *taskRepositoryImpl) Read(id int) (*Task, error) {
+func (r *taskRepositoryImpl) Read(id int) (*model.Task, error) {
 
 	stmt := `SELECT id, title FROM tasks WHERE id = ?`
 
-	task := Task{}
+	task := model.Task{}
 
 	err := r.db.QueryRow(stmt, id).Scan(&task.ID, &task.Title)
 
@@ -45,7 +42,7 @@ func (r *taskRepositoryImpl) Read(id int) (*Task, error) {
 
 }
 
-func (r *taskRepositoryImpl) Update(task *Task) error {
+func (r *taskRepositoryImpl) Update(task *model.Task) error {
 
 	stmt := `UPDATE tasks SET title = ? WHERE id = ?`
 

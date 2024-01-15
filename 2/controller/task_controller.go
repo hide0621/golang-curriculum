@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"2/model"
 	"fmt"
 	"net/http"
 
@@ -8,11 +9,6 @@ import (
 )
 
 type TaskController struct {
-}
-
-type Task struct {
-	ID    int    `json:"id"`
-	Title string `json:"title"`
 }
 
 func (t *TaskController) Get(c echo.Context) error {
@@ -25,9 +21,7 @@ func (t *TaskController) Get(c echo.Context) error {
 
 func (t *TaskController) Create(c echo.Context) error {
 
-	// var task model.Task
-
-	var task Task
+	var task model.Task
 
 	if err := c.Bind(&task); err != nil {
 		return c.JSON(http.StatusBadRequest, nil)
