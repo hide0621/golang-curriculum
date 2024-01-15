@@ -7,7 +7,7 @@ import (
 
 type TaskUsecase interface {
 	CreateTask(title string) error
-	GetTask(id int) (repository.Task, error)
+	GetTask(id int) (*repository.Task, error)
 	UpdateTask(id int, title string) error
 	DeleteTask(id int) error
 }
