@@ -65,3 +65,24 @@ func (r *taskRepositoryImpl) Update(task *Task) error {
 	return err
 
 }
+
+func (r *taskRepositoryImpl) Delete(id int) error {
+
+	stmt := `DELETE FROM tasks WHERE id = ?`
+
+	rows, err := r.db.Exec(stmt, id)
+	if err != nil {
+		return err
+	}
+
+	rowsAffected, err := rows.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if rowsAffected == 0 {
+		return sql.ErrNoRows
+	}
+
+	return err
+
+}
