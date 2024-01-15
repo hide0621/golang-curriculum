@@ -12,7 +12,7 @@ import (
 
 func initDB() (*sql.DB, error) {
 
-	db, err := sql.Open("sqlite3", "./test.db")
+	db, err := sql.Open("sqlite3", "./test.db") // golang-curriculum/2/test.dbの予定
 	return db, err
 
 }
