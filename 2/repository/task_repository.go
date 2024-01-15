@@ -25,10 +25,22 @@ func NewTaskRepository(db *sql.DB) TaskRepository {
 
 func (r *taskRepositoryImpl) Create(task *Task) (int, error) {
 
-	// ここでSQLを実行
 	stmt := `INSERT INTO tasks (title) VALUES (?) RETURNING id`
+
 	err := r.db.QueryRow(stmt, task.Title).Scan(&task.ID)
 
 	return task.ID, err
+
+}
+
+func (r *taskRepositoryImpl) Read(id int) (*Task, error) {
+
+	stmt := `SELECT id, title FROM tasks WHERE id = ?`
+
+	task := Task{}
+
+	err := r.db.QueryRow(stmt, id).Scan(&task.ID, &task.Title)
+
+	return &task, err
 
 }
