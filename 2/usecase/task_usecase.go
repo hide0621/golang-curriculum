@@ -52,7 +52,13 @@ func (u *taskUsecase) UpdateTask(id int, title string) error {
 
 	task := model.Task{ID: id, Title: title}
 
-	err := u.r.Update(&task)
+	// 教材内ではこの処理は組み込んでないが、必要だと思われるので追加
+	err := task.Validate()
+	if err != nil {
+		return err
+	}
+
+	err = u.r.Update(&task)
 
 	return err
 
