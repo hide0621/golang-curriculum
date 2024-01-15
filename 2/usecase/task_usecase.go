@@ -25,6 +25,11 @@ func (u *taskUsecase) CreateTask(title string) error {
 
 	task := model.Task{Title: title}
 
+	err := task.Validate()
+	if err != nil {
+		return err
+	}
+
 	id, err := u.r.Create(&task)
 	fmt.Println(id)
 
