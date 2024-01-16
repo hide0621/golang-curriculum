@@ -28,6 +28,7 @@ func (t *taskController) Get(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		msg := fmt.Errorf("parse error: %v", err.Error())
+		// curl http://localhost:8080/tasks/hoge とすると "parse error: strconv.Atoi: parsing \"hoge\": invalid syntax" と返ってくる
 		return c.JSON(http.StatusBadRequest, msg.Error())
 	}
 
