@@ -25,6 +25,12 @@ func main() {
 	}
 	fmt.Println(db)
 
+	// 教材ではidはオートインクリメントではなく、titleもnot nullではないが、こちらの方が良いと思われるので変更
+	_, err = db.Exec("CREATE TABLE IF NOT EXISTS tasks (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL)")
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	e := echo.New()
 
 	e.Use(middleware.Logger())
