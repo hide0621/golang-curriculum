@@ -48,15 +48,11 @@ func (t *taskController) Create(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, nil)
 	}
 
-	fmt.Println(task.Title)
+	createdID, err := t.u.CreateTask(task.Title)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, nil)
+	}
 
-	// created, err := usecase.CreateTask(task)
-	// if err != nil {
-	// 	return c.JSON(http.StatusInternalServerError, nil)
-	// }
-
-	// return c.JSON(http.StatusOK, created)
-
-	return c.JSON(http.StatusOK, nil)
+	return c.JSON(http.StatusOK, createdID)
 
 }
