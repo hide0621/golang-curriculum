@@ -15,3 +15,17 @@ https://yossi-note.com/golang_workspaces/
 https://qiita.com/Rqixy/items/6bdead71dc02eb233376
 
 なお、go work initなどで指定するモジュールは、そのモジュール（go.modファイル）が含まれているディレクトリ名（モジュール名ではない）を指定すること
+
+# 同一モジュール内にmainパッケージが複数ある場合の実行の方法
+
+go run main.go だと 
+
+command-line-arguments
+
+./main.go:6:12: undefined: Add
+
+このようなエラーが出るので...
+
+go run *.go とする
+
+
