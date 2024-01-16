@@ -2,24 +2,45 @@ package controller
 
 import (
 	"2/model"
+	"2/usecase"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 )
 
-type TaskController struct {
+type TaskController interface {
+	Get(c echo.Context) error
+	Create(c echo.Context) error
 }
 
-func (t *TaskController) Get(c echo.Context) error {
+type taskController struct {
+	u usecase.TaskUsecase
+}
 
-	// tasks, err := usecase.GetTasks()
+func NewTaskController(u usecase.TaskUsecase) TaskController {
+	return &taskController{u: u}
+}
 
-	return c.JSON(http.StatusOK, nil)
+func (t *taskController) Get(c echo.Context) error {
+
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		msg := fmt.Errorf("parse error: %v", err.Error())
+		return c.JSON(http.StatusBadRequest, msg)
+	}
+
+	task, err := t.u.GetTask(id)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, nil)
+	}
+
+	return c.JSON(http.StatusOK, task)
 
 }
 
-func (t *TaskController) Create(c echo.Context) error {
+func (t *taskController) Create(c echo.Context) error {
 
 	var task model.Task
 
