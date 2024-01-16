@@ -2,8 +2,9 @@ package main
 
 import (
 	"2/controller"
+	"2/repository"
+	"2/usecase"
 	"database/sql"
-	"fmt"
 	"log"
 
 	"github.com/labstack/echo/v4"
@@ -12,7 +13,7 @@ import (
 
 func initDB() (*sql.DB, error) {
 
-	db, err := sql.Open("sqlite3", "./test.db") // golang-curriculum/2/test.dbの予定
+	db, err := sql.Open("sqlite3", "./test.db") // golang-curriculum/2/test.dbにexposeする予定
 	return db, err
 
 }
@@ -23,7 +24,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(db)
 
 	// 教材ではidはオートインクリメントではなく、titleもnot nullではないが、こちらの方が良いと思われるので変更
 	_, err = db.Exec("CREATE TABLE IF NOT EXISTS tasks (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL)")
@@ -42,7 +42,9 @@ func main() {
 
 	// taskController := controller.TaskController{}
 
-	taskController := &controller.TaskController{}
+	taskRepository := repository.NewTaskRepository(db)
+	taskUsecase := usecase.NewTaskUsecase(taskRepository)
+	taskController := controller.NewTaskController(taskUsecase)
 
 	e.GET("/tasks", taskController.Get)
 
