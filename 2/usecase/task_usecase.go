@@ -30,8 +30,11 @@ func (u *taskUsecase) CreateTask(title string) (int, error) {
 	}
 
 	id, err := u.r.Create(&task)
+	if err != nil {
+		return 0, err
+	}
 
-	return id, err
+	return id, nil
 
 }
 
@@ -57,15 +60,21 @@ func (u *taskUsecase) UpdateTask(id int, title string) error {
 	}
 
 	err = u.r.Update(&task)
+	if err != nil {
+		return err
+	}
 
-	return err
+	return nil
 
 }
 
 func (u *taskUsecase) DeleteTask(id int) error {
 
 	err := u.r.Delete(id)
+	if err != nil {
+		return err
+	}
 
-	return err
+	return nil
 
 }

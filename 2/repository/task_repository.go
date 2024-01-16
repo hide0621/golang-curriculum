@@ -25,8 +25,11 @@ func (r *taskRepositoryImpl) Create(task *model.Task) (int, error) {
 	stmt := `INSERT INTO tasks (title) VALUES (?) RETURNING id`
 
 	err := r.db.QueryRow(stmt, task.Title).Scan(&task.ID)
+	if err != nil {
+		return 0, err
+	}
 
-	return task.ID, err
+	return task.ID, nil
 
 }
 
@@ -37,8 +40,11 @@ func (r *taskRepositoryImpl) Read(id int) (*model.Task, error) {
 	task := model.Task{}
 
 	err := r.db.QueryRow(stmt, id).Scan(&task.ID, &task.Title)
+	if err != nil {
+		return nil, err
+	}
 
-	return &task, err
+	return &task, nil
 
 }
 
@@ -59,7 +65,7 @@ func (r *taskRepositoryImpl) Update(task *model.Task) error {
 		return sql.ErrNoRows
 	}
 
-	return err
+	return nil
 
 }
 
@@ -80,6 +86,6 @@ func (r *taskRepositoryImpl) Delete(id int) error {
 		return sql.ErrNoRows
 	}
 
-	return err
+	return nil
 
 }

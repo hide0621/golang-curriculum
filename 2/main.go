@@ -9,6 +9,7 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	_ "github.com/mattn/go-sqlite3"
 )
 
 func initDB() (*sql.DB, error) {

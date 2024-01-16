@@ -28,12 +28,12 @@ func (t *taskController) Get(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		msg := fmt.Errorf("parse error: %v", err.Error())
-		return c.JSON(http.StatusBadRequest, msg)
+		return c.JSON(http.StatusBadRequest, msg.Error())
 	}
 
 	task, err := t.u.GetTask(id)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, nil)
+		return c.JSON(http.StatusInternalServerError, err)
 	}
 
 	return c.JSON(http.StatusOK, task)
@@ -45,12 +45,12 @@ func (t *taskController) Create(c echo.Context) error {
 	var task model.Task
 
 	if err := c.Bind(&task); err != nil {
-		return c.JSON(http.StatusBadRequest, nil)
+		return c.JSON(http.StatusBadRequest, err)
 	}
 
 	createdID, err := t.u.CreateTask(task.Title)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, nil)
+		return c.JSON(http.StatusInternalServerError, err)
 	}
 
 	return c.JSON(http.StatusOK, createdID)
