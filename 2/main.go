@@ -46,7 +46,7 @@ func main() {
 	taskUsecase := usecase.NewTaskUsecase(taskRepository)
 	taskController := controller.NewTaskController(taskUsecase)
 
-	e.GET("/tasks", taskController.Get)
+	e.GET("/tasks/:id", taskController.Get)
 
 	e.POST("/tasks", taskController.Create)
 
