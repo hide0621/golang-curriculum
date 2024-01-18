@@ -1,6 +1,10 @@
 package main
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+)
 
 func TestAdd(t *testing.T) {
 	result := Add(1, 2)
@@ -19,12 +23,18 @@ func TestSubtract(t *testing.T) {
 }
 
 func TestDivide(t *testing.T) {
+
 	result, err := Divide(6, 3)
-	if err != nil {
-		t.Errorf("Divide(6, 3) failed. Expected no error, got %v", err.Error())
-	}
-	expected := 2
-	if result != expected {
-		t.Errorf("Divide(6, 3) returned %d, expected 2.", result)
-	}
+
+	assert.NoError(t, err, "an unexpected error occurred: %v", err)
+	assert.Equal(t, 2, result, "they should be equal")
+
+	// if err != nil {
+	// 	t.Errorf("Divide(6, 3) failed. Expected no error, got %v", err.Error())
+	// }
+	// expected := 2
+	// if result != expected {
+	// 	t.Errorf("Divide(6, 3) returned %d, expected 2.", result)
+	// }
+
 }
