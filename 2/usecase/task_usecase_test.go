@@ -14,6 +14,12 @@ type TaskRepositoryMock struct {
 }
 
 func (m *TaskRepositoryMock) Create(task *model.Task) (int, error) {
+
+	/*
+		argsはモックされたメソッド（今回はレポジトリー層のCreateメソッド）の引数を取得するためのオブジェクト
+		モックされたメソッドの戻り値はargsが配列の形で保持している
+	*/
+
 	args := m.Called(task)
 	return args.Int(0), args.Error(1)
 }
@@ -42,6 +48,10 @@ func TestTaskUsecase_CreateTask(t *testing.T) {
 	taskUsecase := usecase.NewTaskUsecase(mockRepo)
 
 	// レポジトリー層のCreateメソッドのモックを作成
+	/*
+		On()メソッドの第一引数は、今回のテスト対象の関数（CreateTaskメソッド）が依存するメソッド名を指定する。
+		On()メソッドの第二引数は、レポジトリー層のCreateメソッドの引数と同じ型である必要がある。
+	*/
 	task := &model.Task{Title: "test"}
 	mockRepo.On("Create", task).Return(1, nil)
 
