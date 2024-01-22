@@ -12,7 +12,9 @@ func main() {
 	fmt.Println("numのアドレス:", &num) //numのアドレス: 0x1400009c018
 	fmt.Println("numの値:", num)     //numの値: 10
 
-	runtime.GC() //手動でガベージコレクターを実行
+	// Goのガベージコレクタはランタイムによって自動的に実行されるが、
+	//以下の処理を書くことで、このタイミングで手動でガベージコレクターを実行させることもできる
+	runtime.GC()
 
 	var ptr *int = &num //numのアドレスをptrに代入 (変数numのアドレスを格納する変数ptrを宣言)
 
