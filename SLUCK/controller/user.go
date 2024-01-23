@@ -27,6 +27,16 @@ func (c *userController) Create(ctx echo.Context) error {
 		return ctx.JSON(http.StatusBadRequest, err)
 	}
 
+	/*
+		main関数内でe.Validatorを作成しているのでctx.Validateメソッドが使える
+		実行されるのはCustomValidatorのValidateメソッド
+		Error()をつけることでエラーの内容を文字列で返す
+		例："code=400, message=Key: 'UserRequest.Name' Error:Field validation for 'Name' failed on the 'required' tag"
+	*/
+	if err := ctx.Validate(req); err != nil {
+		return ctx.JSON(http.StatusBadRequest, err.Error())
+	}
+
 	// ここでコントローラー層からモデル層への変換を行う（DTOのような役割）
 	u := toModel(req)
 

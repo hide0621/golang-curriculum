@@ -7,7 +7,7 @@ import (
 
 // コントローラー層で扱うデータ型(リクエストでさばくでデータ型)
 type UserRequest struct {
-	Name  string `json:"name"`
+	Name  string `json:"name" validate:"required"` // echoのバリデーションを使って、nameをリクエストで必須にする
 	Age   int    `json:"age"`
 	Email string `json:"email"`
 }
