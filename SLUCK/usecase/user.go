@@ -2,11 +2,13 @@ package usecase
 
 import (
 	"context"
+	"fmt"
+	"sluck/model"
 	"sluck/repository"
 )
 
 type UserUsecase interface {
-	Create(ctx context.Context) error
+	Create(ctx context.Context, user *model.User) error
 }
 
 type userUsecase struct {
@@ -17,6 +19,9 @@ func NewUserUsecase(r repository.UserRepository) UserUsecase {
 	return &userUsecase{r: r}
 }
 
-func (u *userUsecase) Create(ctx context.Context) error {
+func (u *userUsecase) Create(ctx context.Context, user *model.User) error {
+
+	fmt.Println("usecase creating ... ")
+
 	return nil
 }

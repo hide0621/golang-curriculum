@@ -5,9 +5,13 @@ import (
 	"sluck/controller"
 	"sluck/repository"
 	"sluck/usecase"
+
+	"github.com/labstack/echo/v4"
 )
 
 func main() {
+
+	e := echo.New()
 
 	fmt.Println("Hello, World!")
 
@@ -15,6 +19,8 @@ func main() {
 	uu := usecase.NewUserUsecase(ur)
 	uc := controller.NewUserController(uu)
 
-	uc.Create(nil)
+	e.POST("/users", uc.Create)
+
+	e.Start(":8080")
 
 }
