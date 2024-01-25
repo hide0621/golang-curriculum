@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"sluck/controller"
 
-	// "sluck/infra"
+	"sluck/infra"
 	"sluck/repository"
 	"sluck/usecase"
 
@@ -34,7 +34,7 @@ func main() {
 
 	e.Validator = &CustomValidator{validator: validator.New()}
 
-	// db := infra.Connect()
+	db := infra.Connect()
 
 	ur := repository.NewUserRepository(db)
 	uu := usecase.NewUserUsecase(ur)
