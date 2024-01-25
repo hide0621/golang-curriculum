@@ -68,6 +68,8 @@ command-line-arguments
 
 # MySQLの環境構築（パスワード無しでログインできないようにする）について
 
+[前提] **homebrew**で入れたものとする
+
 以下のコマンドを実行する
 
 `mysql_secure_installation`
