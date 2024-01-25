@@ -112,6 +112,21 @@ MySQLのユーザーパスワード等、gitの管理下に置きたくない情
 
 [Ignoring .env files in my project with .gitignore duplicate](https://stackoverflow.com/questions/59055847/ignoring-env-files-in-my-project-with-gitignore)
 
+# DBeaverの設定について
+
+**オートコミット（自動コミット）はオフ**にして、明示的にトランザクションとコミットのステートメントを使用して、DBに反映させるようにしている
+
+オートコミットがオンだと、反映させるつもりのない更新系のクエリを誤って実行してしまうことも考えられるため...
+
+ex.
+[DBeaverでやらかした話](https://qiita.com/tosiooooooo/items/46b2ae7c0687dc061775)
+
+参考：
+
+[業務でDBeaverを利用する上でのオススメ設定](https://qiita.com/hiroga/items/34ac29b2a81b7f64eb1f)
+
+
+
 
 
 
