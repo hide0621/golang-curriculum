@@ -98,6 +98,21 @@ https://dev.mysql.com/doc/refman/8.0/en/mysql-secure-installation.html
 
 https://qiita.com/hato_poppo/items/d3c2bb3aa97e09b123c3
 
+# envファイルとgitignoreファイルで繊細な情報を管理する
+
+MySQLのユーザーパスワード等、gitの管理下に置きたくない情報については以下の手順を踏むこと
+
+・.envファイルに上記の繊細な情報を書く
+
+・.gitignoreファイルにルートディレクトリ以下の全ての.envファイルがgitの管理下から外れるように書く（詳しくはこのレポジトリー内の.gitignoreファイルや参考ドキュメントを参照）
+
+詳しくは以下の記事を参照
+
+[Go + MySQLに.envを使う](https://zenn.dev/joo_hashi/scraps/3f5eef2103c6f9)
+
+[Ignoring .env files in my project with .gitignore duplicate](https://stackoverflow.com/questions/59055847/ignoring-env-files-in-my-project-with-gitignore)
+
+
 
 
 
