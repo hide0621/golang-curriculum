@@ -1,9 +1,10 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 	"sluck/controller"
+
+	// "sluck/infra"
 	"sluck/repository"
 	"sluck/usecase"
 
@@ -33,9 +34,9 @@ func main() {
 
 	e.Validator = &CustomValidator{validator: validator.New()}
 
-	fmt.Println("Hello, World!")
+	// db := infra.Connect()
 
-	ur := repository.NewUserRepository(nil)
+	ur := repository.NewUserRepository(db)
 	uu := usecase.NewUserUsecase(ur)
 	uc := controller.NewUserController(uu)
 
