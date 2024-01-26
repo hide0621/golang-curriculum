@@ -2,13 +2,15 @@ package usecase
 
 import (
 	"context"
-	"fmt"
 	"sluck/model"
 	"sluck/repository"
 )
 
 type UserUsecase interface {
-	Create(ctx context.Context, user *model.User) error
+	GetByID(ctx context.Context, id int) (*model.User, error)
+	Create(ctx context.Context, user *model.User) (string, error)
+	Update(ctx context.Context, user *model.User) error
+	Delete(ctx context.Context, id int) error
 }
 
 type userUsecase struct {
@@ -19,9 +21,46 @@ func NewUserUsecase(r repository.UserRepository) UserUsecase {
 	return &userUsecase{r: r}
 }
 
-func (u *userUsecase) Create(ctx context.Context, user *model.User) error {
+func (u *userUsecase) GetByID(ctx context.Context, id int) (*model.User, error) {
 
-	fmt.Println("usecase creating ... ")
+	user, err := u.r.Read(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+
+	return user, nil
+
+}
+
+func (u *userUsecase) Create(ctx context.Context, user *model.User) (string, error) {
+
+	id, err := u.r.Create(ctx, user)
+	if err != nil {
+		return "", err
+	}
+
+	return id, nil
+
+}
+
+func (u *userUsecase) Update(ctx context.Context, user *model.User) error {
+
+	err := u.r.Update(ctx, user)
+	if err != nil {
+		return err
+	}
 
 	return nil
+
+}
+
+func (u *userUsecase) Delete(ctx context.Context, id int) error {
+
+	err := u.r.Delete(ctx, id)
+	if err != nil {
+		return err
+	}
+
+	return nil
+
 }
