@@ -10,6 +10,7 @@ import (
 
 	"github.com/go-playground/validator"
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 // echoのバリデーションをgo-playground/validatorを使ったカスタムバリデーションにする
@@ -31,6 +32,9 @@ func (cv *CustomValidator) Validate(i any) error {
 func main() {
 
 	e := echo.New()
+
+	e.Use(middleware.Logger())
+	e.Use(middleware.Recover())
 
 	e.Validator = &CustomValidator{validator: validator.New()}
 
