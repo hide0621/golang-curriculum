@@ -36,6 +36,8 @@ func main() {
 
 	db := infra.Connect()
 
+	defer db.Close()
+
 	ur := repository.NewUserRepository(db)
 	uu := usecase.NewUserUsecase(ur)
 	uc := controller.NewUserController(uu)
