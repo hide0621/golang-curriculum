@@ -46,6 +46,12 @@ func (r *userRepository) Read(ctx context.Context, id int) (*model.User, error) 
 
 	var user model.User
 
+	/*
+		NULLが入っていると各々のカラムの型に変換ができず、エラーが発生する
+		例（ageカラムがNULLの場合）：sql: Scan error on column index 3, name "age": converting NULL to int is unsupported
+		Goの整数型はNULLをサポートしていないため、NULL値を直接整数型に変換することはできない
+		上記のエラーが発生した場合、エラーがユースケース層に返され、ユースケース層からコントローラー層に返され、コントローラー層からクライアントに返される仕様にしている
+	*/
 	err := r.db.QueryRow("SELECT id, name, email, age FROM users WHERE id = ?", id).Scan(&user.ID, &user.Name, &user.Email, &user.Age)
 	if err != nil {
 		log.Println("レポジトリー層のReadメソッドでエラーが発生しました")
