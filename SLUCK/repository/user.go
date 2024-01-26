@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"log"
 	"sluck/model"
 	"strconv"
 )
@@ -47,6 +48,8 @@ func (r *userRepository) Read(ctx context.Context, id int) (*model.User, error) 
 
 	err := r.db.QueryRow("SELECT id, name, email, age FROM users WHERE id = ?", id).Scan(&user.ID, &user.Name, &user.Email, &user.Age)
 	if err != nil {
+		log.Println("レポジトリー層のReadメソッドでエラーが発生しました")
+		log.Println(err)
 		return nil, err
 	}
 
