@@ -93,7 +93,7 @@ func (c *userController) Delete(ctx echo.Context) error {
 	id, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {
 		msg := fmt.Errorf("parse error: %v", err.Error())
-		// curl http://localhost:8080/tasks/hoge とすると "parse error: strconv.Atoi: parsing \"hoge\": invalid syntax" と返ってくる
+		// curl http://localhost:8080/users/hoge とすると "parse error: strconv.Atoi: parsing \"hoge\": invalid syntax" と返ってくる
 		return ctx.JSON(http.StatusBadRequest, msg.Error())
 	}
 
