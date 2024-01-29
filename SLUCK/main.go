@@ -42,8 +42,9 @@ func main() {
 
 	defer db.Close()
 
+	mr := repository.NewMessageRepository(db)
 	ur := repository.NewUserRepository(db)
-	uu := usecase.NewUserUsecase(ur)
+	uu := usecase.NewUserUsecase(ur, mr)
 	uc := controller.NewUserController(uu)
 
 	e.POST("/users", uc.Create)

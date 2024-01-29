@@ -14,11 +14,15 @@ type UserUsecase interface {
 }
 
 type userUsecase struct {
-	r repository.UserRepository
+	r  repository.UserRepository
+	mr repository.MessageRepository
 }
 
-func NewUserUsecase(r repository.UserRepository) UserUsecase {
-	return &userUsecase{r: r}
+func NewUserUsecase(r repository.UserRepository, mr repository.MessageRepository) UserUsecase {
+	return &userUsecase{
+		r:  r,
+		mr: mr,
+	}
 }
 
 func (u *userUsecase) GetByID(ctx context.Context, id int) (*model.User, error) {
@@ -57,6 +61,11 @@ func (u *userUsecase) Update(ctx context.Context, user *model.User) error {
 func (u *userUsecase) Delete(ctx context.Context, id int) error {
 
 	err := u.r.Delete(ctx, id)
+	if err != nil {
+		return err
+	}
+
+	err = u.mr.Delete(ctx, id)
 	if err != nil {
 		return err
 	}
