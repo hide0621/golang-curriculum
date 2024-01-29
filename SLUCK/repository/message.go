@@ -19,7 +19,7 @@ func NewMessageRepository(db *sql.DB) MessageRepository {
 
 func (r *messageRepository) Delete(ctx context.Context, userID int) error {
 
-	_, err := r.db.ExecContext(ctx, "DELETE FROM message WHERE user_id = ?", userID)
+	_, err := r.db.Exec("DELETE FROM message WHERE user_id = ?", userID)
 	if err != nil {
 		return err
 	}
