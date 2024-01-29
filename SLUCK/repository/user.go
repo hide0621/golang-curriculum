@@ -54,7 +54,7 @@ func (r *userRepository) Read(ctx context.Context, id int) (*model.User, error) 
 	*/
 	err := r.db.QueryRow("SELECT id, name, email, age FROM users WHERE id = ?", id).Scan(&user.ID, &user.Name, &user.Email, &user.Age)
 	if err != nil {
-		log.Println("レポジトリー層のReadメソッドでエラーが発生しました")
+		log.Println("Error occurred in the Read method of the user repository layer")
 		log.Println(err)
 		return nil, err
 	}
