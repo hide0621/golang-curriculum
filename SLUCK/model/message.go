@@ -10,5 +10,4 @@ type Message struct {
 	ChannelID int       `json:"channel_id"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
-	DeleteAt  time.Time `json:"delete_at"`
 }
