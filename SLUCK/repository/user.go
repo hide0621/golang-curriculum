@@ -85,7 +85,17 @@ func (r *userRepository) Update(ctx context.Context, user *model.User) error {
 
 func (r *userRepository) Delete(ctx context.Context, id int) error {
 
-	result, err := r.db.Exec("DELETE FROM users WHERE id = ?", id)
+	/*
+		トランザクション（今回はtxトランザクション）の中のDBオブジェクトを使用する
+		こうすることで同一トランザクション内で複数のDB操作を行うことができる
+		例：ユーザーを削除すると同時にそのユーザーのメッセージも削除する
+	*/
+	db, ok := GetTx(ctx)
+	if !ok {
+		return fmt.Errorf("failed to get tx. transaction tx is not found")
+	}
+
+	result, err := db.Exec("DELETE FROM users WHERE id = ?", id)
 	if err != nil {
 		return err
 	}

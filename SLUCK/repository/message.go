@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"database/sql"
+	"fmt"
 )
 
 type MessageRepository interface {
@@ -19,7 +20,17 @@ func NewMessageRepository(db *sql.DB) MessageRepository {
 
 func (r *messageRepository) Delete(ctx context.Context, userID int) error {
 
-	_, err := r.db.Exec("DELETE FROM message WHERE user_id = ?", userID)
+	/*
+		トランザクション（今回はtxトランザクション）の中のDBオブジェクトを使用する
+		こうすることで同一トランザクション内で複数のDB操作を行うことができる
+		例：ユーザーを削除すると同時にそのユーザーのメッセージも削除する
+	*/
+	db, ok := GetTx(ctx)
+	if !ok {
+		return fmt.Errorf("failed to get tx. transaction tx is not found")
+	}
+
+	_, err := db.Exec("DELETE FROM message WHERE user_id = ?", userID)
 	if err != nil {
 		return err
 	}
