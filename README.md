@@ -66,6 +66,71 @@ command-line-arguments
 
 書き方についてはこのディレクトリ内の`.gitignore`ファイルを参照
 
+# MySQLの環境構築（パスワード無しでログインできないようにする）について
+
+[前提] **homebrew**で入れたものとする
+
+以下のコマンドを実行する
+
+`mysql_secure_installation`
+
+上記のコマンドを実行することで、
+
+・初期パスワードからユーザーが指定したパスワード（rootユーザーのパスワード）に変更できる
+
+・パスワードにバリデーション（パスワードの強度）を設定できる
+
+・ローカル以外のホストが遠隔でrootユーザーとしてログインできないようになる
+
+・匿名ユーザーの削除
+
+・testデータベースの削除
+
+・「test_」から始まるデータベースへの接続権限の削除
+
+・特権テーブルのリロード（更新内容の反映）
+
+上記のようなメリットがあり、セキュリティー対策としてやっておいた方がいい
+
+詳しくは以下のサイトを参照
+
+https://dev.mysql.com/doc/refman/8.0/en/mysql-secure-installation.html
+
+https://qiita.com/hato_poppo/items/d3c2bb3aa97e09b123c3
+
+# envファイルとgitignoreファイルで繊細な情報を管理する
+
+MySQLのユーザーパスワード等、gitの管理下に置きたくない情報については以下の手順を踏むこと
+
+・.envファイルに上記の繊細な情報を書く
+
+・.gitignoreファイルにルートディレクトリ以下の全ての.envファイルがgitの管理下から外れるように書く（詳しくはこのレポジトリー内の.gitignoreファイルや参考ドキュメントを参照）
+
+詳しくは以下の記事を参照
+
+[Go + MySQLに.envを使う](https://zenn.dev/joo_hashi/scraps/3f5eef2103c6f9)
+
+[Ignoring .env files in my project with .gitignore duplicate](https://stackoverflow.com/questions/59055847/ignoring-env-files-in-my-project-with-gitignore)
+
+# DBeaverの設定について
+
+**オートコミット（自動コミット）はオフ**にして、明示的にトランザクションとコミットのステートメントを使用して、DBに反映させるようにしている
+
+オートコミットがオンだと、反映させるつもりのない更新系のクエリを誤って実行してしまうことも考えられるため...
+
+ex.
+[DBeaverでやらかした話](https://qiita.com/tosiooooooo/items/46b2ae7c0687dc061775)
+
+参考：
+
+[業務でDBeaverを利用する上でのオススメ設定](https://qiita.com/hiroga/items/34ac29b2a81b7f64eb1f)
+
+
+
+
+
+
+
 
 
 
