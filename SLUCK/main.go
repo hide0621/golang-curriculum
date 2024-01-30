@@ -3,6 +3,7 @@ package main
 import (
 	"net/http"
 	"sluck/controller"
+	"sluck/transaction"
 
 	"sluck/infra"
 	"sluck/repository"
@@ -42,9 +43,11 @@ func main() {
 
 	defer db.Close()
 
+	transaction := transaction.NewTransaction(db)
+
 	mr := repository.NewMessageRepository(db)
 	ur := repository.NewUserRepository(db)
-	uu := usecase.NewUserUsecase(ur, mr)
+	uu := usecase.NewUserUsecase(ur, mr, transaction)
 	uc := controller.NewUserController(uu)
 
 	e.POST("/users", uc.Create)
