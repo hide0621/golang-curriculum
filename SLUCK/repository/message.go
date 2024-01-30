@@ -30,9 +30,18 @@ func (r *messageRepository) Delete(ctx context.Context, userID int) error {
 		return fmt.Errorf("failed to get tx. transaction tx is not found")
 	}
 
-	_, err := db.Exec("DELETE FROM message WHERE user_id = ?", userID)
+	result, err := db.Exec("DELETE FROM message WHERE user_id = ?", userID)
 	if err != nil {
 		return err
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+
+	if rowsAffected == 0 {
+		return fmt.Errorf("no rows affected for id: %d", userID)
 	}
 
 	return nil
