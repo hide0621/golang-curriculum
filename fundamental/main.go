@@ -1,40 +1,65 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 )
 
 func main() {
 
-	i := 10
+	numberStr := "one"
 
-	if i == 10 {
-		fmt.Println("i is 10")
+	if numberStr == "one" {
+		fmt.Println("Number is one")
+	} else if numberStr == "two" {
+		fmt.Println("Number is two")
+	} else if numberStr == "three" {
+		fmt.Println("Number is three")
 	} else {
-		fmt.Println("i is not 10")
+		fmt.Println("Unknown number")
 	}
 
-	if true {
-		fmt.Println("true")
-	} else {
-		fmt.Println("false")
+	// 上記のようなif文は、switch文で書き換えた方がスマート
+
+	switch numberStr {
+	case "one":
+		fmt.Println("Number is one")
+	case "two":
+		fmt.Println("Number is two")
+	case "three":
+		fmt.Println("Number is three")
+	default:
+		fmt.Println("Unknown number")
 	}
 
-	// 上と下のif文は同じ意味
+	// こんなswitch文も書ける
 
-	ok := true
-
-	if ok {
-		fmt.Println("true")
+	name := "Taro"
+	switch name {
+	case "Taro", "Jiro":
+		fmt.Println("I am Taro or Jiro")
+	case "Saburo":
+		fmt.Println("I am Saburo")
+	default:
+		fmt.Println("I am someone")
 	}
 
-	if !ok {
-		fmt.Println("false")
+	switch id := 2; id {
+	case 1, 2:
+		fmt.Println("id is 1 or 2")
+	case 3:
+		fmt.Println("id is 3")
+	default:
+		fmt.Println("id is unknown")
 	}
 
-	if err := errors.New("error"); err != nil {
-		fmt.Println(err)
+	// switch文の条件式（case式）には、bool型の変数を指定できる
+	switch x := 1; x > 0 {
+	case true:
+		fmt.Println("x is positive")
+	case false:
+		fmt.Println("x is negative")
+	default:
+		fmt.Println("x is zero")
 	}
 
 }
