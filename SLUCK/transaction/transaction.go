@@ -16,3 +16,8 @@ type tx struct {
 func NewTransaction(db *sql.DB) Transaction {
 	return &tx{db: db}
 }
+
+func (t *tx) DoInTx(ctx context.Context, f func(context.Context) (any, error)) (any, error) {
+
+	return nil, nil
+}
