@@ -4,6 +4,7 @@ import (
 	"context"
 	"sluck/model"
 	"sluck/repository"
+	"sluck/transaction"
 )
 
 type UserUsecase interface {
@@ -14,14 +15,16 @@ type UserUsecase interface {
 }
 
 type userUsecase struct {
-	r  repository.UserRepository
-	mr repository.MessageRepository
+	r           repository.UserRepository
+	mr          repository.MessageRepository
+	transaction transaction.Transaction
 }
 
-func NewUserUsecase(r repository.UserRepository, mr repository.MessageRepository) UserUsecase {
+func NewUserUsecase(r repository.UserRepository, mr repository.MessageRepository, transaction transaction.Transaction) UserUsecase {
 	return &userUsecase{
-		r:  r,
-		mr: mr,
+		r:           r,
+		mr:          mr,
+		transaction: transaction,
 	}
 }
 
@@ -60,15 +63,24 @@ func (u *userUsecase) Update(ctx context.Context, user *model.User) error {
 
 func (u *userUsecase) Delete(ctx context.Context, id int) error {
 
-	err := u.r.Delete(ctx, id)
-	if err != nil {
-		return err
-	}
+	// トランザクションを開始して、そこでDB操作を行う
+	u.transaction.DoInTx(ctx, func(ctx context.Context) (any, error) {
 
-	err = u.mr.Delete(ctx, id)
-	if err != nil {
-		return err
-	}
+		// 以下の2つのメソッドがDoInTxメソッドの第二引数に相当する(2つのメソッドの結果をDoInTxメソッドの第二引数に渡している)
+
+		err := u.r.Delete(ctx, id)
+		if err != nil {
+			return nil, err
+		}
+
+		err = u.mr.Delete(ctx, id)
+		if err != nil {
+			return nil, err
+		}
+
+		return nil, nil
+
+	})
 
 	return nil
 
