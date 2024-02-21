@@ -1,8 +1,8 @@
-package main
+package ifswitch
 
 import "fmt"
 
-func if_switch_practice() {
+func IfSwitchPractice() {
 	numberStr := "one"
 
 	if numberStr == "one" {

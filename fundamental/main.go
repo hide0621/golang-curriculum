@@ -1,7 +1,7 @@
 package main
 
+import "fundamental/ifswitch"
+
 func main() {
-
-	if_switch_practice()
-
+	ifswitch.IfSwitchPractice()
 }
