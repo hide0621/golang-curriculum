@@ -2,10 +2,12 @@ package main
 
 import (
 	// "fundamental/ifswitch"
-	"fundamental/pointer"
+	enum "fundamental/Enum" // このパスのエイリアス（Enumでなくenumで呼び出す）を定義
+	// "fundamental/pointer"
 )
 
 func main() {
 	// ifswitch.IfSwitchPractice()
-	pointer.PointerPractice()
+	// pointer.PointerPractice()
+	enum.EnumPractice()
 }
