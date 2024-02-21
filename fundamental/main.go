@@ -1,7 +1,11 @@
 package main
 
-import "fundamental/ifswitch"
+import (
+	// "fundamental/ifswitch"
+	"fundamental/pointer"
+)
 
 func main() {
-	ifswitch.IfSwitchPractice()
+	// ifswitch.IfSwitchPractice()
+	pointer.PointerPractice()
 }
