@@ -44,6 +44,20 @@ func (s *Student) SetAge(age int) {
 	s.Age = age
 }
 
+// ポインタ型のレシーバーなら、こんな感じでメソッドの中でswitch文を使って、状態を変更することもできる
+func (s *Student) NextStep() {
+	switch s.Status {
+	case StudentStatusHighSchool:
+		s.Status = StudentStatusCollege
+	case StudentStatusCollege:
+		s.Status = StudentStatusGraduated
+	case StudentStatusGraduated:
+		fmt.Println("You have already graduated")
+	default:
+		fmt.Println("Unknown status")
+	}
+}
+
 func EnumPractice() {
 	student := Student{
 		ID:     1,
@@ -65,20 +79,31 @@ func EnumPractice() {
 		println(student.Name, "is", "Unknown status")
 	}
 
+	// ポインタ型のレシーバーであっても、その呼び出し時は値型でも呼び出すことができる
+
 	// セッターを使って年齢を変更
 	student.SetAge(21)
 
 	fmt.Println(student.GetAge()) // 21
 
+	// 以下の2つは同じ意味
 	fmt.Println(StudentStatusHighSchool.GetStatus()) // High School
 
 	fmt.Println(student.Status.GetStatus()) // High School
 
+	// ここでCollegeに変更
+	student.NextStep()
+
+	fmt.Println(student.Status.GetStatus()) // College
+
 	// ここでGraduatedに変更
 	student.Status.SetStatus(StudentStatusGraduated)
 
+	// 以下の2つは同じ意味
 	fmt.Println(student.Status.GetStatus()) // Graduated
 
 	fmt.Println(student.Status) // Graduated
+
+	student.NextStep() // You have already graduated
 
 }
