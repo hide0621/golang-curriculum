@@ -6,4 +6,5 @@ use (
 	./3
 	./4
 	./SLUCK
+	./fundamental
 )

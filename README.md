@@ -66,6 +66,14 @@ command-line-arguments
 
 書き方についてはこのディレクトリ内の`.gitignore`ファイルを参照
 
+また環境毎に`gitignore`ファイルを生成してくれるツールもあるので、それを活用しても良い
+
+詳しくは以下の記事と公式サイトを参照
+
+[Githubのgitignoreファイルの使い方](https://qiita.com/gk12/items/944b0ef5932adb9a6bd6)
+
+[gitignore.io](https://www.toptal.com/developers/gitignore)
+
 # MySQLの環境構築（パスワード無しでログインできないようにする）について
 
 [前提] **homebrew**で入れたものとする
